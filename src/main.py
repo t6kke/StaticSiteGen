@@ -1,6 +1,15 @@
 from textnode import *
 from htmlnode import *
 
+
+text_type_text = "text"
+text_type_bold = "bold"
+text_type_italic = "italic"
+text_type_code = "code"
+text_type_link = "link"
+text_type_image = "image"
+
+
 def main():
 
     #initial check
@@ -9,7 +18,34 @@ def main():
     tn2 = TextNode("This is a text node", "bold")
     print(tn2)
 
+
     #second check
+    tn3 = TextNode("This is a `text` node", "text")
+    tn4 = TextNode("This `is a text` node", "text")
+    #tn5 = TextNode("This `is a text node", "text")
+    tn6 = TextNode("`This is a text node`", "text")
+    tn_list = [tn3, tn4, tn6]
+    n_list = split_nodes_delimiter(tn_list, "`", text_type_code)
+    print(n_list)
+
+    tn3 = TextNode("This is a *text* node", "text")
+    tn4 = TextNode("This *is a text* node", "text")
+    tn_list = [tn3, tn4]
+    n_list2 = split_nodes_delimiter(tn_list, "*", text_type_italic)
+    tn_list2 = [tn3, tn4]
+    n_list = split_nodes_delimiter(tn_list2, "*", text_type_italic)
+    print(n_list)
+    
+    node = TextNode("**bold** and *italic*", text_type_text)
+    new_nodes = split_nodes_delimiter([node], "**", text_type_bold)
+    new_nodes = split_nodes_delimiter(new_nodes, "*", text_type_italic)
+    print(f"main {new_nodes}")
+
+    text = "This is text with an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and ![another](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/dfsdkjfd.png)"
+    print(extract_markdown_images(text))
+
+    text = "This is text with a [link](https://www.example.com) and [another](https://www.example.com/another)"
+    print(extract_markdown_links(text))
 
 
 main()
