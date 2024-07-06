@@ -1,6 +1,7 @@
 import unittest
 
 from textnode import *
+from inline_markdown import *
 
 
 class TestTextNode(unittest.TestCase):

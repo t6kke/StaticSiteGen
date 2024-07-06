@@ -64,3 +64,113 @@ def extract_markdown_links(text):
     result_list = []
     matches = re.findall(r"\[(.*?)\]\((.*?)\)", text)
     return matches
+
+
+def split_nodes_image(old_nodes):
+    result_nodes = []
+    solo_image = False
+
+    #print(f"working on {old_nodes}")
+    for node in old_nodes:
+        images_list = extract_markdown_images(node.text)
+        original_text = node.text
+        images = extract_markdown_images(original_text)
+        if len(images) == 0:
+            new_nodes.append(old_node)
+            continue
+        #print(f"extracted images list: {images_list}")
+        #print(f"tuple doing split: {images_list[0]}")
+        split_text = node.text.split(f"![{images_list[0][0]}]({images_list[0][1]})", 1)
+        for item in split_text:
+            #print(item)
+            pass
+        if split_text[0] != "" and split_text[1] != "":
+            #print("!!! Adding condition for middle image")
+            split_text.insert(1, "REPLACE_THIS_WITH_IMAGE")
+        elif split_text[0] == "" and split_text[1] == "":
+            solo_image = True
+        for item in split_text:
+            #print(item)
+            pass
+        #print(f"Strings split: {split_text}")
+        split_nodes = []
+        #print(f"lenght of string list: {len(split_text)}")
+        for i in range(len(split_text)):
+            #print(f"Item: {i} --- String for processing: {split_text[i]}")
+            if split_text[i] == "" and i == 0:
+                #print("added first item image")
+                tn = TextNode(images_list[0][0], text_type_image, images_list[0][1])
+                split_nodes.append(tn)
+            elif solo_image == False and split_text[i] == "" and i == len(split_text)-1:
+                #print("added last item image")
+                tn = TextNode(images_list[0][0], text_type_image, images_list[0][1])
+                split_nodes.append(tn)
+            elif split_text[i] != "" and split_text[i] != "REPLACE_THIS_WITH_IMAGE":
+                #print("added regular text if exists: " + split_text[i])
+                tn = TextNode(split_text[i], text_type_text)
+                split_nodes.append(tn)
+            elif split_text[i] == "REPLACE_THIS_WITH_IMAGE":
+                #print("added image in middle")
+                tn = TextNode(images_list[0][0], text_type_image, images_list[0][1])
+                split_nodes.append(tn)
+        result_nodes.extend(split_nodes)
+        #print(f"Result list: {result_nodes}")
+    for i in range(len(result_nodes)):
+        if "![" in result_nodes[i].text:
+            #print("!!! Found another image that needs processing")
+            tn = result_nodes.pop(i)
+            result_nodes.extend(split_nodes_image([tn]))
+    return result_nodes
+
+
+
+def split_nodes_link(old_nodes):
+    result_nodes = []
+    solo_link = False
+
+    #print(f"working on {old_nodes}")
+    for node in old_nodes:
+        link_list = extract_markdown_links(node.text)
+        #print(f"extracted images list: {link_list}")
+        #print(f"tuple doing split: {link_list[0]}")
+        split_text = node.text.split(f"[{link_list[0][0]}]({link_list[0][1]})", 1)
+        for item in split_text:
+            #print(item)
+            pass
+        if split_text[0] != "" and split_text[1] != "":
+            #print("!!! Adding condition for middle image")
+            split_text.insert(1, "REPLACE_THIS_WITH_LINK")
+        elif split_text[0] == "" and split_text[1] == "":
+            solo_link = True
+        for item in split_text:
+            #print(item)
+            pass
+        #print(f"Strings split: {split_text}")
+        split_nodes = []
+        #print(f"lenght of string list: {len(split_text)}")
+        for i in range(len(split_text)):
+            #print(f"Item: {i} --- String for processing: {split_text[i]}")
+            if split_text[i] == "" and i == 0:
+                #print("added first item image")
+                tn = TextNode(link_list[0][0], text_type_link, link_list[0][1])
+                split_nodes.append(tn)
+            elif solo_link == True and split_text[i] == "" and i == len(split_text)-1:
+                #print("added last item image")
+                tn = TextNode(link_list[0][0], text_type_link, link_list[0][1])
+                split_nodes.append(tn)
+            elif split_text[i] != "" and split_text[i] != "REPLACE_THIS_WITH_LINK":
+                #print("added regular text if exists: " + split_text[i])
+                tn = TextNode(split_text[i], text_type_text)
+                split_nodes.append(tn)
+            elif split_text[i] == "REPLACE_THIS_WITH_LINK":
+                #print("added image in middle")
+                tn = TextNode(link_list[0][0], text_type_link, link_list[0][1])
+                split_nodes.append(tn)
+        result_nodes.extend(split_nodes)
+        #print(f"Result list: {result_nodes}")
+    for i in range(len(result_nodes)):
+        if "[" in result_nodes[i].text:
+            #print("!!! Found another image that needs processing")
+            tn = result_nodes.pop(i)
+            result_nodes.extend(split_nodes_link([tn]))
+    return result_nodes
