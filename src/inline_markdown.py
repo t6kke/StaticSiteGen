@@ -129,11 +129,10 @@ def split_nodes_image(old_nodes):
 
     #print(f"working on {old_nodes}")
     for node in old_nodes:
+        #print(f"working on {node}")
         images_list = extract_markdown_images(node.text)
-        original_text = node.text
-        images = extract_markdown_images(original_text)
-        if len(images) == 0:
-            new_nodes.append(old_node)
+        if len(images_list) == 0:
+            result_nodes.append(node)
             continue
         #print(f"extracted images list: {images_list}")
         #print(f"tuple doing split: {images_list[0]}")
@@ -173,7 +172,7 @@ def split_nodes_image(old_nodes):
         result_nodes.extend(split_nodes)
         #print(f"Result list: {result_nodes}")
     for i in range(len(result_nodes)):
-        if "![" in result_nodes[i].text:
+        if "![" in result_nodes[i].text and "](" in result_nodes[i].text:
             #print("!!! Found another image that needs processing")
             tn = result_nodes.pop(i)
             result_nodes.extend(split_nodes_image([tn]))
@@ -187,7 +186,11 @@ def split_nodes_link(old_nodes):
 
     #print(f"working on {old_nodes}")
     for node in old_nodes:
+        #print(f"working on {node}")
         link_list = extract_markdown_links(node.text)
+        if len(link_list) == 0:
+            result_nodes.append(node)
+            continue
         #print(f"extracted images list: {link_list}")
         #print(f"tuple doing split: {link_list[0]}")
         split_text = node.text.split(f"[{link_list[0][0]}]({link_list[0][1]})", 1)
@@ -211,7 +214,7 @@ def split_nodes_link(old_nodes):
                 #print("added first item image")
                 tn = TextNode(link_list[0][0], text_type_link, link_list[0][1])
                 split_nodes.append(tn)
-            elif solo_link == True and split_text[i] == "" and i == len(split_text)-1:
+            elif solo_link == False and split_text[i] == "" and i == len(split_text)-1:
                 #print("added last item image")
                 tn = TextNode(link_list[0][0], text_type_link, link_list[0][1])
                 split_nodes.append(tn)
@@ -226,8 +229,20 @@ def split_nodes_link(old_nodes):
         result_nodes.extend(split_nodes)
         #print(f"Result list: {result_nodes}")
     for i in range(len(result_nodes)):
-        if "[" in result_nodes[i].text:
+        if "[" in result_nodes[i].text and "](" in result_nodes[i].text:
             #print("!!! Found another image that needs processing")
             tn = result_nodes.pop(i)
             result_nodes.extend(split_nodes_link([tn]))
     return result_nodes
+
+
+
+# main fuction to apply all other functions to plain text
+def text_to_textnodes(text):
+    node = TextNode(text, text_type_text)
+    new_nodes = split_nodes_delimiter([node], "**", text_type_bold)
+    new_nodes = split_nodes_delimiter(new_nodes, "*", text_type_italic)
+    new_nodes = split_nodes_delimiter(new_nodes, "`", text_type_code)
+    new_nodes = split_nodes_image(new_nodes)
+    new_nodes = split_nodes_link(new_nodes)
+    return new_nodes

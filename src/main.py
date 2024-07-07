@@ -60,8 +60,8 @@ def main():
     text_type_text,
     )
     node3 = TextNode( "![image](https://www.example.com/image.png)",text_type_text,)
-    new_nodes = split_nodes_image([node3])
-    print(new_nodes)
+    #new_nodes = split_nodes_image([node3])
+    #print(new_nodes)
 
 
     node = TextNode(
@@ -72,8 +72,13 @@ def main():
     "[n2_link](https://storage.googleapis.com/zjjcJKZ.png) and [n2_link image](https://storage.googleapis.com/3elNhQu.png)",
     text_type_text,
     )
-    new_nodes = split_nodes_link([node, node2])
+    #new_nodes = split_nodes_link([node, node2])
     #print(new_nodes)
 
+
+    #fourth check
+    text = "This is **text** with an *italic* word and a `code block` and an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and a [link](https://boot.dev)"
+    new_nodes = text_to_textnodes(text)
+    print(new_nodes)
 
 main()
