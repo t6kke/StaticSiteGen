@@ -1,6 +1,7 @@
 from textnode import *
 from htmlnode import *
 from inline_markdown import *
+from block_markdown import *
 
 
 text_type_text = "text"
@@ -79,6 +80,26 @@ def main():
     #fourth check
     text = "This is **text** with an *italic* word and a `code block` and an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and a [link](https://boot.dev)"
     new_nodes = text_to_textnodes(text)
-    print(new_nodes)
+    #print(new_nodes)
+
+
+    # fifth checks
+    base_markdown = '''This is **bolded** paragraph
+
+This is another paragraph with *italic* text and `code` here
+This is the same paragraph on a new line
+
+* This is a list
+* with items'''
+    markdown_block_list = markdown_to_blocks(base_markdown)
+    print(markdown_block_list)
+    for item in markdown_block_list:
+        print(block_to_block_type(item))
+
+    base_markdown = '''### heading'''
+    markdown_block_list = markdown_to_blocks(base_markdown)
+    print(markdown_block_list)
+    for item in markdown_block_list:
+        print(block_to_block_type(item))
 
 main()
