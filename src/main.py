@@ -134,18 +134,18 @@ p4l3 and a third one
 
 p5l1 Source: [boot.dev](https://boot.dev)'''
     result = markdown_to_html_node(base_markdown)
-    #print(result)
+    #print(result.to_html())
 
     
     base_markdown = '''just text'''
     result = markdown_to_html_node(base_markdown)
-    #print(result)
+    #print(result.to_html())
 
     base_markdown = '''This is **bolded** paragraph
 text in a p
 tag here'''
     result = markdown_to_html_node(base_markdown)
-    #print(result)
+    #print(result.to_html())
 
     base_markdown = '''- This is a list
 - with items
@@ -155,7 +155,7 @@ tag here'''
 2. with items
 3. and more items'''
     result = markdown_to_html_node(base_markdown)
-    #print(result)
+    #print(result.to_html())
 
 
 main()

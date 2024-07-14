@@ -117,8 +117,8 @@ this is paragraph text
         base_markdown = '''just text'''
         result = markdown_to_html_node(base_markdown)
         self.assertEqual(
-            "LeafNode(<div>, [LeafNode(<p>, [LeafNode(None, just text, None)], None)], None)",
-            f"{result}")
+            "<div><p>just text</p></div>",
+            f"{result.to_html()}")
 
 
     def test_markdown_to_html_2(self):
@@ -131,8 +131,8 @@ this is paragraph text
 3. and more items'''
         result = markdown_to_html_node(base_markdown)
         self.assertEqual(
-            "LeafNode(<div>, [LeafNode(<ul>, [LeafNode(<li>, [LeafNode(None, This is a list, None)], None), LeafNode(<li>, [LeafNode(None, with items, None)], None), LeafNode(<li>, [LeafNode(None, and , None), LeafNode(i, more, None), LeafNode(None,  items, None)], None)], None), LeafNode(<ol>, [LeafNode(<li>, [LeafNode(None, This is an , None), LeafNode(code, ordered, None), LeafNode(None,  list, None)], None), LeafNode(<li>, [LeafNode(None, with items, None)], None), LeafNode(<li>, [LeafNode(None, and more items, None)], None)], None)], None)",
-            f"{result}")
+            "<div><ul><li>This is a list</li><li>with items</li><li>and <i>more</i> items</li></ul><ol><li>This is an <code>ordered</code> list</li><li>with items</li><li>and more items</li></ol></div>",
+            f"{result.to_html()}")
 
     def test_markdown_to_html_3(self):
         base_markdown = '''# main heading
@@ -167,16 +167,16 @@ p4l3 and a third one
 p5l1 Source: [boot.dev](https://boot.dev)'''
         result = markdown_to_html_node(base_markdown)
         self.assertEqual(
-            '''LeafNode(<div>, [LeafNode(<h1>, main heading, None), LeafNode(<p>, [LeafNode(None, p1l1 just some regular text
-p1l2 more regular text, None)], None), LeafNode(<p>, [LeafNode(None, p2l1 This is text with an , None), LeafNode(img, , {'src': 'https://i.imgur.com/zjjcJKZ.png', 'alt': 'image'})], None), LeafNode(<h3>, sub heading, None), LeafNode(<p>, [LeafNode(None, p3l1 This is , None), LeafNode(b, bolded, None), LeafNode(None,  paragraph, None)], None), LeafNode(<p>, [LeafNode(None, p4l1 This is another paragraph with , None), LeafNode(i, italic, None), LeafNode(None,  text and , None), LeafNode(code, code, None), LeafNode(None,  here
+            '''<div><h1>main heading</h1><p>p1l1 just some regular text
+p1l2 more regular text</p><p>p2l1 This is text with an <img src="https://i.imgur.com/zjjcJKZ.png" alt="image"></img></p><h3>sub heading</h3><p>p3l1 This is <b>bolded</b> paragraph</p><p>p4l1 This is another paragraph with <i>italic</i> text and <code>code</code> here
 p4l2 This is the same paragraph on a new line
-p4l3 and a third one, None)], None), LeafNode(<blockquote>, quoted sentences line
+p4l3 and a third one</p><blockquote>quoted sentences line
 quoted sentence ongoing
 quote final line
-           - some guy, None), LeafNode(<ul>, [LeafNode(<li>, [LeafNode(None, This is a list, None)], None), LeafNode(<li>, [LeafNode(None, with items, None)], None)], None), LeafNode(<pre>, [LeafNode(code, 
+           - some guy</blockquote><ul><li>This is a list</li><li>with items</li></ul><pre><code>
 SELECT * FROM my_db WHERE id = 10
-, None)], None), LeafNode(<ol>, [LeafNode(<li>, [LeafNode(None, result1, None)], None), LeafNode(<li>, [LeafNode(None, result2, None)], None), LeafNode(<li>, [LeafNode(None, result3, None)], None)], None), LeafNode(<p>, [LeafNode(None, p5l1 Source: , None), LeafNode(a, boot.dev, {'href': 'https://boot.dev'})], None)], None)''',
-            f"{result}")
+</code></pre><ol><li>result1</li><li>result2</li><li>result3</li></ol><p>p5l1 Source: <a href="https://boot.dev">boot.dev</a></p></div>''',
+            f"{result.to_html()}")
 
 
 

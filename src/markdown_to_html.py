@@ -14,41 +14,41 @@ def markdown_to_html_node(markdown):
         #print(block_type)
         if block_type == block_type_heading:
             h_nbr, h_text = get_heading_elements(block)
-            heading_HTMLnode = LeafNode(f"<h{h_nbr}>", h_text)
+            heading_HTMLnode = LeafNode(f"h{h_nbr}", h_text)
             final_HTMLnode_list.append(heading_HTMLnode)
             #print(heading_HTMLnode)
         if block_type == block_type_paragraph:
             htmlnode_list = get_paragraph_html_nodes(block)
-            paragraph_HTMLnode = ParentNode("<p>", htmlnode_list)
+            paragraph_HTMLnode = ParentNode("p", htmlnode_list)
             final_HTMLnode_list.append(paragraph_HTMLnode)
             #print(paragraph_HTMLnode)
         if block_type == block_type_code:
             children = []
             code_html_node = get_code_leafnode(block)
             children.append(code_html_node)
-            code_parent_HTMLnode = ParentNode("<pre>", children)
+            code_parent_HTMLnode = ParentNode("pre", children)
             final_HTMLnode_list.append(code_parent_HTMLnode)
             #print(code_parent_HTMLnode)
         if block_type == block_type_quote:
             clean_text = get_quote_text(block)
-            quote_HTMLnode = ParentNode("<blockquote>", clean_text)
+            quote_HTMLnode = LeafNode("blockquote", clean_text)
             final_HTMLnode_list.append(quote_HTMLnode)
             #print(quote_HTMLnode)
         if block_type == block_type_unordered_list:
             children = []
             children = make_lists_to_nodes(block)
-            list_parent_HTMLnode = ParentNode("<ul>", children)
+            list_parent_HTMLnode = ParentNode("ul", children)
             final_HTMLnode_list.append(list_parent_HTMLnode)
             #print(list_parent_HTMLnode)
         if block_type == block_type_ordered_list:
             children = []
             children = make_lists_to_nodes(block)
-            list_parent_HTMLnode = ParentNode("<ol>", children)
+            list_parent_HTMLnode = ParentNode("ol", children)
             final_HTMLnode_list.append(list_parent_HTMLnode)
             #print(list_parent_HTMLnode)
 
     #print(final_HTMLnode_list)
-    final_HTMLnode = ParentNode("<div>", final_HTMLnode_list)
+    final_HTMLnode = ParentNode("div", final_HTMLnode_list)
     return final_HTMLnode
 
 
@@ -74,6 +74,7 @@ def get_code_leafnode(block):
 
 def get_quote_text(block):
     clean_text = block.replace(">", "")
+    #print(f"quote cleanup: {clean_text}")
     return clean_text
 
 def make_lists_to_nodes(block):
@@ -83,7 +84,7 @@ def make_lists_to_nodes(block):
     for line in lines:
         split_line = line.split(" ", 1)
         children = text_to_children(split_line[1])
-        HTML_node_list.append(ParentNode("<li>", children))
+        HTML_node_list.append(ParentNode("li", children))
     return HTML_node_list
 
 def text_to_children(text):
