@@ -1,3 +1,6 @@
+import os
+import shutil
+
 from textnode import *
 from htmlnode import *
 from inline_markdown import *
@@ -20,6 +23,33 @@ def main():
 
     #CustomTests()
 
+    PopulatePublic("static", "public")
+
+
+
+
+
+
+
+
+
+def PopulatePublic(source_folder, destination_folder):
+    shutil.rmtree(destination_folder) # remove existing public folder and it's content
+    os.mkdir(destination_folder) # creat empty public folder
+    CopyStaticToPublic(source_folder+"/", destination_folder+"/") # recursive function to populdate public folder with static content
+
+
+def CopyStaticToPublic(source_folder, destination_folder):
+    source_content = os.listdir(source_folder)
+    #print(source_content)
+    for item in source_content:
+        if os.path.isfile(source_folder+item) == False:
+            os.mkdir(destination_folder+item)
+            source_folder = source_folder + "/" + item + "/"
+            destination_folder = destination_folder + "/" + item + "/"
+            CopyStaticToPublic(source_folder, destination_folder)
+        else:
+            shutil.copy(source_folder+item, destination_folder+item)
 
 
 
