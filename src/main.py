@@ -14,6 +14,20 @@ text_type_image = "image"
 
 
 def main():
+    # example test from boot.dev
+    node = TextNode("This is a text node", "bold", "https://www.boot.dev")
+    print(node)
+
+    #CustomTests()
+
+
+
+
+
+
+
+
+def CustomTests():
 
     #initial check
     tn1 = TextNode("This is a text node", "bold", "https://www.boot.dev")
@@ -156,6 +170,10 @@ tag here'''
 3. and more items'''
     result = markdown_to_html_node(base_markdown)
     #print(result.to_html())
+
+
+
+
 
 
 main()
