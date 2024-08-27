@@ -6,6 +6,7 @@ from htmlnode import *
 from inline_markdown import *
 from block_markdown import *
 from markdown_to_html import *
+from generate_page import *
 
 
 text_type_text = "text"
@@ -19,7 +20,7 @@ text_type_image = "image"
 def main():
     # example test from boot.dev
     node = TextNode("This is a text node", "bold", "https://www.boot.dev")
-    print(node)
+    #print(node)
 
     #CustomTests()
 
@@ -28,15 +29,11 @@ def main():
 
 
 
-
-
-
-
-
 def PopulatePublic(source_folder, destination_folder):
     shutil.rmtree(destination_folder) # remove existing public folder and it's content
     os.mkdir(destination_folder) # creat empty public folder
     CopyStaticToPublic(source_folder+"/", destination_folder+"/") # recursive function to populdate public folder with static content
+    generate_page("content/index.md", "template.html", "public/index.html")
 
 
 def CopyStaticToPublic(source_folder, destination_folder):
@@ -50,9 +47,6 @@ def CopyStaticToPublic(source_folder, destination_folder):
             CopyStaticToPublic(source_folder, destination_folder)
         else:
             shutil.copy(source_folder+item, destination_folder+item)
-
-
-
 
 
 

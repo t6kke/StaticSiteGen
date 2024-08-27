@@ -73,7 +73,7 @@ def get_code_leafnode(block):
     return code_html_node
 
 def get_quote_text(block):
-    clean_text = block.replace(">", "")
+    clean_text = block.replace("> ", "")
     #print(f"quote cleanup: {clean_text}")
     return clean_text
 

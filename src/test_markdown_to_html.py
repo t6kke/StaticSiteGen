@@ -150,9 +150,9 @@ p4l1 This is another paragraph with *italic* text and `code` here
 p4l2 This is the same paragraph on a new line
 p4l3 and a third one
 
->quoted sentences line
->quoted sentence ongoing
->quote final line
+> quoted sentences line
+> quoted sentence ongoing
+> quote final line
 >           - some guy
 
 * This is a list
@@ -173,7 +173,7 @@ p4l2 This is the same paragraph on a new line
 p4l3 and a third one</p><blockquote>quoted sentences line
 quoted sentence ongoing
 quote final line
-           - some guy</blockquote><ul><li>This is a list</li><li>with items</li></ul><pre><code>
+          - some guy</blockquote><ul><li>This is a list</li><li>with items</li></ul><pre><code>
 SELECT * FROM my_db WHERE id = 10
 </code></pre><ol><li>result1</li><li>result2</li><li>result3</li></ol><p>p5l1 Source: <a href="https://boot.dev">boot.dev</a></p></div>''',
             f"{result.to_html()}")
