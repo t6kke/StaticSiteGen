@@ -67,13 +67,13 @@ def get_paragraph_html_nodes(block):
     return htmlnode_list
 
 def get_code_leafnode(block):
-    code_text = block.strip("```")
+    code_text = block.strip("```").strip()
     code_text_node = TextNode(code_text, text_type_code)
     code_html_node = text_node_to_html_node(code_text_node)
     return code_html_node
 
 def get_quote_text(block):
-    clean_text = block.replace(">", "")
+    clean_text = block.replace("> ", "")
     #print(f"quote cleanup: {clean_text}")
     return clean_text
 
