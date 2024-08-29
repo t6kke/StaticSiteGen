@@ -1,3 +1,5 @@
+import os
+
 from markdown_to_html import markdown_to_html_node
 
 def extract_title(markdown):
@@ -37,3 +39,16 @@ def generate_page(from_path, template_path, dest_path):
     with open(dest_path, "w", encoding="utf8") as out_html_file:
         out_html_file.write(result_html)
         out_html_file.close()
+
+
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+    content_list = os.listdir(dir_path_content)
+    print(content_list)
+    for item in content_list:
+        if os.path.isfile(dir_path_content+"/"+item) != False:
+            print("File detected", dir_path_content+ "/" +item)
+            generate_page(dir_path_content+"/index.md", template_path, dest_dir_path+"/index.html")
+        else:
+            print("Folder detected", dir_path_content+ "/" +item)
+            os.mkdir(dest_dir_path+"/"+item)
+            generate_pages_recursive(dir_path_content + "/" + item, template_path, dest_dir_path + "/" + item)
